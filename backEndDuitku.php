@@ -1,8 +1,8 @@
 <?php
-    $merchantCode = 'D0001'; // from duitku
-    $merchantKey = '732B39FC61796845775D2C4FB05332AF'; // from duitku
+    $merchantCode = 'YOUR_MERCHANT_CODE'; // from duitku
+    $merchantKey = 'YOUR_MERCHANT_KEY'; // from duitku
 
-	$paymentAmount = isset($_POST['paymentAmount']) ? $_POST['paymentAmount'] : null; // VC = Credit Card
+	$paymentAmount = isset($_POST['paymentAmount']) ? $_POST['paymentAmount'] : null; // Amount
 	$email = isset($_POST['email']) ? $_POST['email'] : null; // your customer email
     $phoneNumber = isset($_POST['phoneNumber']) ? $_POST['phoneNumber'] : null;// your customer phone number (optional)
 	$productDetails = isset($_POST['productDetail']) ? $_POST['productDetail'] : null;
@@ -10,8 +10,8 @@
     $additionalParam = ''; // optional
     $merchantUserInfo = ''; // optional
     $customerVaName = 'John Doe'; // display name on bank confirmation display
-    $callbackUrl = 'http://example.com/callback'; // url for callback
-    $returnUrl = 'http://localhost:8080/snap/contohDuitkuPopUi'; // url for redirect
+    $callbackUrl = 'http://YOUR_SERVER/callback'; // url for callback
+    $returnUrl = 'http://YOUR_SERVER/return'; // url for redirect
     $expiryPeriod = 10; // set the expired time in minutes
     $signature = md5($merchantCode . $merchantOrderId . $paymentAmount . $merchantKey);
 
@@ -101,7 +101,6 @@
     if($httpCode == 200)
     {
         $result = json_decode($request, true);
-        //header('location: '. $result['paymentUrl']);
         echo $request;
     }
     else
