@@ -74,7 +74,7 @@
     );
 
     $params_string = json_encode($params);
-	$url = 'https://api-sandbox.duitku.com/api/merchant/createInvoice';
+    $url = 'https://api-sandbox.duitku.com/api/merchant/createInvoice';
 	
     $ch = curl_init();
 	$timestamp = round(microtime(true) * 1000);
