@@ -8,7 +8,7 @@
 </div>
 
 <h3>Demo Project</h3>
-Download  <a target="_blank" href="https://docs.duitku.com/mobile/android/en/#introduction">Duitku Docs</a>
+Go To  <a target="_blank" href="https://api-sandbox.duitku.com/demoduitku/">Demo</a>
 
 
 <h3>Full Step Docs </h3>
