@@ -78,17 +78,17 @@
 		var phoneNumber = document.getElementById("phoneNumber").value ;
 		var paymentUi = document.getElementById("paymentUi").value ;
 		$.ajax({
-            type: "POST",
-			data:{
+            	type: "POST",
+		data:{
 			  paymentAmount: amount, 
 			  productDetail: productDetail, 
 			  email: email, 
 			  phoneNumber: phoneNumber
-			  },
-            url: 'https://YOUR_SERVER/Api/backEndDuitku.php',
-            dataType: "json",
-            cache: false,
-            success: function (result) {                				
+		},
+            	url: 'https://YOUR_SERVER/Api/backEndDuitku.php',
+            	dataType: "json",
+            	cache: false,
+            	success: function (result) {                				
 					console.log(result.reference);
 					console.log(result);
 					
