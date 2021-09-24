@@ -98,28 +98,28 @@
 					
 					checkout.process(result.reference, {
 						successEvent: function(result){
-						// tambahkan fungsi sesuai kebutuhan anda
-						console.log('success');
-						console.log(result);
-						alert('Payment Success');
+							// tambahkan fungsi sesuai kebutuhan anda
+							console.log('success');
+							console.log(result);
+							alert('Payment Success');
 						},
 						pendingEvent: function(result){
-						// tambahkan fungsi sesuai kebutuhan anda
-						console.log('pending');
-						console.log(result);
-						alert('Payment Pending');
+							// tambahkan fungsi sesuai kebutuhan anda
+							console.log('pending');
+							console.log(result);
+							alert('Payment Pending');
 						},
 						errorEvent: function(result){
-						// tambahkan fungsi sesuai kebutuhan anda
-						console.log('error');
-						console.log(result);
-						alert('Payment Error');
+							// tambahkan fungsi sesuai kebutuhan anda
+							console.log('error');
+							console.log(result);
+							alert('Payment Error');
 						},
 						closeEvent: function(result){
-						// tambahkan fungsi sesuai kebutuhan anda
-						console.log('customer closed the popup without finishing the payment');
-						console.log(result);
-						alert('customer closed the popup without finishing the payment');
+							// tambahkan fungsi sesuai kebutuhan anda
+							console.log('customer closed the popup without finishing the payment');
+							console.log(result);
+							alert('customer closed the popup without finishing the payment');
 						}
 					});			
 				
