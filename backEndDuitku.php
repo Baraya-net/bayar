@@ -2,10 +2,10 @@
     $merchantCode = 'YOUR_MERCHANT_CODE'; // from duitku
     $merchantKey = 'YOUR_MERCHANT_KEY'; // from duitku
 
-	$paymentAmount = isset($_POST['paymentAmount']) ? $_POST['paymentAmount'] : null; // Amount
-	$email = isset($_POST['email']) ? $_POST['email'] : null; // your customer email
+    $paymentAmount = isset($_POST['paymentAmount']) ? $_POST['paymentAmount'] : null; // Amount
+    $email = isset($_POST['email']) ? $_POST['email'] : null; // your customer email
     $phoneNumber = isset($_POST['phoneNumber']) ? $_POST['phoneNumber'] : null;// your customer phone number (optional)
-	$productDetails = isset($_POST['productDetail']) ? $_POST['productDetail'] : null;
+    $productDetails = isset($_POST['productDetail']) ? $_POST['productDetail'] : null;
     $merchantOrderId = time(); // from merchant, unique   
     $additionalParam = ''; // optional
     $merchantUserInfo = ''; // optional
@@ -88,7 +88,7 @@
 			'x-duitku-signature:' . hash('sha256', $merchantCode.$timestamp.$merchantKey) ,
 			'x-duitku-timestamp:' . $timestamp ,
 			'x-duitku-merchantcode:' . $merchantCode	
-		)                                                                       
+			)                                                                       
     );   
 	
 	
