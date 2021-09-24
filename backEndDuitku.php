@@ -77,17 +77,17 @@
     $url = 'https://api-sandbox.duitku.com/api/merchant/createInvoice';
 	
     $ch = curl_init();
-	$timestamp = round(microtime(true) * 1000);
+    $timestamp = round(microtime(true) * 1000);
     curl_setopt($ch, CURLOPT_URL, $url); 
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
     curl_setopt($ch, CURLOPT_POSTFIELDS, $params_string);                                                                  
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-			'Content-Type: application/json',                                                                                
-			'Content-Length: ' . strlen($params_string),
-			'x-duitku-signature:' . hash('sha256', $merchantCode.$timestamp.$merchantKey) ,
-			'x-duitku-timestamp:' . $timestamp ,
-			'x-duitku-merchantcode:' . $merchantCode	
+				'Content-Type: application/json',                                                                                
+				'Content-Length: ' . strlen($params_string),
+				'x-duitku-signature:' . hash('sha256', $merchantCode.$timestamp.$merchantKey) ,
+				'x-duitku-timestamp:' . $timestamp ,
+				'x-duitku-merchantcode:' . $merchantCode	
 			)                                                                       
     );   
 	
