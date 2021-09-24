@@ -12,5 +12,5 @@ Go To  <a target="_blank" href="https://api-sandbox.duitku.com/demoduitku/">Demo
 
 
 <h3>Full Step Docs </h3>
-Download  <a target="_blank" href="https://docs.duitku.com/mobile/android/en/#introduction">Duitku Docs</a>
+Go To  <a target="_blank" href="https://docs.duitku.com/bersama/id/#pendahuluan">Duitku Docs</a>
 
