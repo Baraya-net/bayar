@@ -1,7 +1,7 @@
 <h1>Duitku Pop Example Project Implementation</h1>
 
 
-<b>Welcome to,</b> Duitku Pop Example Project Implementation Page, Integrate this Duitku Pop to start transaction using duitku in your web or Application.
+<b>Welcome to,</b> Duitku Pop Example Project Implementation Page, Integrate this Duitku Pop to start transaction using Duitku in your Web or Application.
 
 <div align="center">
     <img style="align:center;" src="https://docs.duitku.com/bersama/en/images/flow_duitku_payment-63d523f1.png" width="550px"</img> 
