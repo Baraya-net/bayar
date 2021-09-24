@@ -85,7 +85,7 @@
 			  email: email, 
 			  phoneNumber: phoneNumber
 			  },
-            url: 'https://13b5-182-253-47-123.ngrok.io/tes/backEndDuitku.php',
+            url: 'https://YOUR_SERVER/Api/backEndDuitku.php',
             dataType: "json",
             cache: false,
             success: function (result) {                				
