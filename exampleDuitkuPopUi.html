@@ -11,6 +11,15 @@
 		<!-- Mandatory js duitku bundle  -->
 		<!-- Switch if using sandbox / production  -->
 		<script src="https://api-sandbox.duitku.com/demoduitku/lib/duitku-payment-sandbox-compiled.js"></script>
+		<!-- Bootstrap core JavaScript
+		================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+		<script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script>
+		<script src="https://getbootstrap.com/docs/4.0/dist/js/bootstrap.min.js"></script>
+		<script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/holder.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	</head>
 	
 	<body>
@@ -56,80 +65,72 @@
 			<!-- Form -->
 		    </div>
 		</div>
+		
+
+		<!-- Request to backend with ajax (example)  -->
+		<script type="text/javascript">
+
+		    function pay() {
+				var amount = document.getElementById("amount").value ;
+				var productDetail = document.getElementById("productDetail").value ;
+				var email = document.getElementById("email").value ;
+				var phoneNumber = document.getElementById("phoneNumber").value ;
+				var paymentUi = document.getElementById("paymentUi").value ;
+				$.ajax({
+				type: "POST",
+				data:{
+					  paymentAmount: amount, 
+					  productDetail: productDetail, 
+					  email: email, 
+					  phoneNumber: phoneNumber
+				},
+				url: 'https://YOUR_SERVER/Api/backEndDuitku.php',
+				dataType: "json",
+				cache: false,
+				success: function (result) {                				
+							console.log(result.reference);
+							console.log(result);
+
+							if(paymentUi === "2"){ // user redirect payment interface
+								window.location = result.paymentUrl;
+							}
+
+							checkout.process(result.reference, {
+								successEvent: function(result){
+									// tambahkan fungsi sesuai kebutuhan anda
+									console.log('success');
+									console.log(result);
+									alert('Payment Success');
+								},
+								pendingEvent: function(result){
+									// tambahkan fungsi sesuai kebutuhan anda
+									console.log('pending');
+									console.log(result);
+									alert('Payment Pending');
+								},
+								errorEvent: function(result){
+									// tambahkan fungsi sesuai kebutuhan anda
+									console.log('error');
+									console.log(result);
+									alert('Payment Error');
+								},
+								closeEvent: function(result){
+									// tambahkan fungsi sesuai kebutuhan anda
+									console.log('customer closed the popup without finishing the payment');
+									console.log(result);
+									alert('customer closed the popup without finishing the payment');
+								}
+							});			
+
+			    },
+			});
+
+		    }
+		</script>
+		
 
 	</body>
 </html>
  
 	
-<!-- Bootstrap core JavaScript
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-<script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script>
-<script src="https://getbootstrap.com/docs/4.0/dist/js/bootstrap.min.js"></script>
-<script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/holder.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-
-
-<!-- Request to backend with ajax (example)  -->
-<script type="text/javascript">
-	
-    function pay() {
-		var amount = document.getElementById("amount").value ;
-		var productDetail = document.getElementById("productDetail").value ;
-		var email = document.getElementById("email").value ;
-		var phoneNumber = document.getElementById("phoneNumber").value ;
-		var paymentUi = document.getElementById("paymentUi").value ;
-		$.ajax({
-            	type: "POST",
-		data:{
-			  paymentAmount: amount, 
-			  productDetail: productDetail, 
-			  email: email, 
-			  phoneNumber: phoneNumber
-		},
-            	url: 'https://YOUR_SERVER/Api/backEndDuitku.php',
-            	dataType: "json",
-            	cache: false,
-            	success: function (result) {                				
-					console.log(result.reference);
-					console.log(result);
-					
-					if(paymentUi === "2"){ // user redirect payment interface
-						window.location = result.paymentUrl;
-					}
-					
-					checkout.process(result.reference, {
-						successEvent: function(result){
-							// tambahkan fungsi sesuai kebutuhan anda
-							console.log('success');
-							console.log(result);
-							alert('Payment Success');
-						},
-						pendingEvent: function(result){
-							// tambahkan fungsi sesuai kebutuhan anda
-							console.log('pending');
-							console.log(result);
-							alert('Payment Pending');
-						},
-						errorEvent: function(result){
-							// tambahkan fungsi sesuai kebutuhan anda
-							console.log('error');
-							console.log(result);
-							alert('Payment Error');
-						},
-						closeEvent: function(result){
-							// tambahkan fungsi sesuai kebutuhan anda
-							console.log('customer closed the popup without finishing the payment');
-							console.log(result);
-							alert('customer closed the popup without finishing the payment');
-						}
-					});			
-				
-            },
-        });
-
-    }
-</script>
