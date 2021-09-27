@@ -1,64 +1,66 @@
 <!DOCTYPE html>
 <html>
-<body>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/checkout/">
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/checkout/">
 
-<!-- Bootstrap core CSS -->
-<link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+		<!-- Bootstrap core CSS -->
+		<link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<!-- Mandatory js duitku bundle  -->
-<!-- Switch if using sandbox / production  -->
-<script src="https://api-sandbox.duitku.com/demoduitku/lib/duitku-payment-sandbox-compiled.js"></script>
+		<!-- Mandatory js duitku bundle  -->
+		<!-- Switch if using sandbox / production  -->
+		<script src="https://api-sandbox.duitku.com/demoduitku/lib/duitku-payment-sandbox-compiled.js"></script>
+	</head>
+	
+	<body>
+		<div class="col-md-6 col-lg-4 offset-lg-4 offset-md-3 mt-5">
+		    <div class="bg-light p-5 border shadow">
+			<!-- Form -->
+			<form>         
 
-</body>
+			    <center><h4>Duitku Pop Example</h4></center>
+			    <br>
+
+			    <div class="mb-4">
+				<label>Amount</label>
+				<input required id="amount" min="1" value="10000" type"number" class="form-control" placeholder="10000">                
+			    </div>
+
+			    <div class="mb-4">
+				<label>Product Detail</label>
+				<input required id="productDetail" value="Sepatu Trendy" type"text" class="form-control" placeholder="Sepatu Trendy">                
+			    </div>
+
+			    <div class="mb-4">
+				<label>Email</label>
+				<input required id="email" value="customer@duitku.com" type"text" class="form-control" placeholder="customer@duitku.com">                
+			    </div>
+
+			    <div class="mb-4">
+				<label>Phone Number</label>
+				<input required id="phoneNumber" value="08123456789" type"number" class="form-control" placeholder="08123456789">                
+			    </div>
+
+			    <div class="mb-4">  
+				<label>Payment Interface</label>			
+				<select id="paymentUi" class="form-control">
+					<option value="1">PopUp UI </option>
+					<option value="2">Redirect UI</option>
+				</select>               
+			    </div>
+
+			    <button type="button" id="submit" class="btn btn-primary w-100 my-3 shadow" onClick="pay();">Pay With Duitku</button>
+
+			</form>
+			<!-- Form -->
+		    </div>
+		</div>
+
+	</body>
 </html>
-
-<div class="col-md-6 col-lg-4 offset-lg-4 offset-md-3 mt-5">
-    <div class="bg-light p-5 border shadow">
-        <!-- Form -->
-        <form>         
-		
-	    <center><h4>Duitku Pop Example</h4></center>
-	    <br>
-		
-            <div class="mb-4">
-		<label>Amount</label>
-                <input required id="amount" min="1" value="10000" type"number" class="form-control" placeholder="10000">                
-            </div>
-		
-            <div class="mb-4">
-		<label>Product Detail</label>
-                <input required id="productDetail" value="Sepatu Trendy" type"text" class="form-control" placeholder="Sepatu Trendy">                
-            </div>
-		
-	    <div class="mb-4">
-		<label>Email</label>
-                <input required id="email" value="customer@duitku.com" type"text" class="form-control" placeholder="customer@duitku.com">                
-            </div>
-		
-	    <div class="mb-4">
-		<label>Phone Number</label>
-                <input required id="phoneNumber" value="08123456789" type"number" class="form-control" placeholder="08123456789">                
-            </div>
-		
-            <div class="mb-4">  
-		<label>Payment Interface</label>			
-                <select id="paymentUi" class="form-control">
-			<option value="1">PopUp UI </option>
-			<option value="2">Redirect UI</option>
-		</select>               
-            </div>
-		
-            <button type="button" id="submit" class="btn btn-primary w-100 my-3 shadow" onClick="pay();">Pay With Duitku</button>
-            
-        </form>
-        <!-- Form -->
-    </div>
-</div>
-
  
+	
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
