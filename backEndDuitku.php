@@ -13,7 +13,6 @@
     $callbackUrl = 'http://YOUR_SERVER/callback'; // url for callback
     $returnUrl = 'http://YOUR_SERVER/return'; // url for redirect
     $expiryPeriod = 10; // set the expired time in minutes
-    $signature = md5($merchantCode . $merchantOrderId . $paymentAmount . $merchantKey);
 
     // Customer Detail
     $firstName = "John";
