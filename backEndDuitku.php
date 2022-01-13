@@ -68,7 +68,6 @@
         'customerDetail' => $customerDetail,
         'callbackUrl' => $callbackUrl,
         'returnUrl' => $returnUrl,
-        'signature' => $signature,
         'expiryPeriod' => $expiryPeriod
     );
 
