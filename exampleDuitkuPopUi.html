@@ -71,6 +71,9 @@
 		<script type="text/javascript">
 
 		    function pay() {
+				var buttonPay = document.getElementById("submit")
+				buttonPay.disabled = true;
+				buttonPay.innerHTML = "loading";
 				var amount = document.getElementById("amount").value ;
 				var productDetail = document.getElementById("productDetail").value ;
 				var email = document.getElementById("email").value ;
@@ -101,24 +104,32 @@
 									console.log('success');
 									console.log(result);
 									alert('Payment Success');
+									buttonPay.disabled = false;
+									buttonPay.innerHTML = "Pay With Duitku";
 								},
 								pendingEvent: function(result){
 									// tambahkan fungsi sesuai kebutuhan anda
 									console.log('pending');
 									console.log(result);
 									alert('Payment Pending');
+									buttonPay.disabled = false;
+									buttonPay.innerHTML = "Pay With Duitku";
 								},
 								errorEvent: function(result){
 									// tambahkan fungsi sesuai kebutuhan anda
 									console.log('error');
 									console.log(result);
 									alert('Payment Error');
+									buttonPay.disabled = false;
+									buttonPay.innerHTML = "Pay With Duitku";
 								},
 								closeEvent: function(result){
 									// tambahkan fungsi sesuai kebutuhan anda
 									console.log('customer closed the popup without finishing the payment');
 									console.log(result);
 									alert('customer closed the popup without finishing the payment');
+									buttonPay.disabled = false;
+									buttonPay.innerHTML = "Pay With Duitku";
 								}
 							});			
 
