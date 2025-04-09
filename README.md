@@ -12,5 +12,5 @@ Go To  <a target="_blank" href="https://api-sandbox.duitku.com/demoduitku/">Demo
 
 
 <h3>Full Step Docs </h3>
-Go To  <a target="_blank" href="https://docs.duitku.com/bersama/id/#pendahuluan">Duitku Docs</a>
+Go To  <a target="_blank" href="https://docs.duitku.com/pop/id/#pendahuluan">Duitku Docs</a>
 
