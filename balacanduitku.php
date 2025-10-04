@@ -57,7 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // --- Kirim Request ke Duitku menggunakan cURL ---
     $timestamp = round(microtime(true) * 1000);
-    $signature = hash('sha26', $merchantCode . $timestamp . $merchantKey);
+    // PERBAIKAN: Menggunakan algoritma hash sha256 yang benar
+    $signature = hash('sha256', $merchantCode . $timestamp . $merchantKey);
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -102,3 +103,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 ?>
+
+
