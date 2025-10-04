@@ -1,146 +1,133 @@
+
+
+<!-- BAGIAN TAMPILAN (FRONTEND) -->
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-		<link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/checkout/">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pembayaran Duitku</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Duitku.js (Sandbox) -->
+    <script src="https://app-sandbox.duitku.com/lib/js/duitku.js"></script>
+</head>
+<body>
+    <div class="col-md-6 col-lg-4 offset-lg-4 offset-md-3 mt-5">
+        <div class="bg-light p-5 border shadow">
+            <!-- Form Pembayaran -->
+            <form>
+                <center><h4>Contoh Pembayaran Duitku</h4></center>
+                <br>
+                <div class="mb-4">
+                    <label for="amount">Amount</label>
+                    <input required id="amount" min="1" value="10000" type="number" class="form-control" placeholder="10000">
+                </div>
+                <div class="mb-4">
+                    <label for="productDetail">Product Detail</label>
+                    <input required id="productDetail" value="Sepatu Trendy" type="text" class="form-control" placeholder="Sepatu Trendy">
+                </div>
+                <div class="mb-4">
+                    <label for="email">Email</label>
+                    <input required id="email" value="customer@duitku.com" type="email" class="form-control" placeholder="customer@duitku.com">
+                </div>
+                <div class="mb-4">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input required id="phoneNumber" value="08123456789" type="number" class="form-control" placeholder="08123456789">
+                </div>
+                <div class="mb-4">
+                    <label for="paymentUi">Payment Interface</label>
+                    <select id="paymentUi" class="form-control">
+                        <option value="1">PopUp UI</option>
+                        <option value="2">Redirect UI</option>
+                    </select>
+                </div>
+                <button type="button" id="submit" class="btn btn-primary w-100 my-3 shadow" onClick="pay();">Bayar Dengan Duitku</button>
+            </form>
+        </div>
+    </div>
 
-		<!-- Bootstrap core CSS -->
-		<link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://getbootstrap.com/docs/4.0/dist/js/bootstrap.bundle.min.js"></script>
 
-		<!-- Mandatory js duitku bundle  -->
-		<!-- Switch if using sandbox / production  -->
-		<script src="https://app-sandbox.duitku.com/lib/js/duitku.js"></script>
-		<!-- Bootstrap core JavaScript
-		================================================== -->
-		<!-- Placed at the end of the document so the pages load faster -->
-		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-		<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-		<script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script>
-		<script src="https://getbootstrap.com/docs/4.0/dist/js/bootstrap.min.js"></script>
-		<script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/holder.min.js"></script>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	</head>
-	
-	<body>
-		<div class="col-md-6 col-lg-4 offset-lg-4 offset-md-3 mt-5">
-		    <div class="bg-light p-5 border shadow">
-			<!-- Form -->
-			<form>         
+    <!-- Script untuk memproses pembayaran -->
+    <script type="text/javascript">
+        function pay() {
+            var buttonPay = document.getElementById("submit");
+            buttonPay.disabled = true;
+            buttonPay.innerHTML = "Memproses...";
 
-			    <center><h4>Duitku Pop Example</h4></center>
-			    <br>
+            var amount = document.getElementById("amount").value;
+            var productDetail = document.getElementById("productDetail").value;
+            var email = document.getElementById("email").value;
+            var phoneNumber = document.getElementById("phoneNumber").value;
+            var paymentUi = document.getElementById("paymentUi").value;
 
-			    <div class="mb-4">
-				<label>Amount</label>
-				<input required id="amount" min="1" value="10000" type"number" class="form-control" placeholder="10000">                
-			    </div>
+            $.ajax({
+                type: "POST",
+                // PERBAIKAN: Kirim data ke file ini sendiri, bukan ke URL lain
+                url: '', 
+                data: {
+                    paymentAmount: amount,
+                    productDetail: productDetail,
+                    email: email,
+                    phoneNumber: phoneNumber
+                },
+                dataType: "json",
+                cache: false,
+                success: function (result) {
+                    console.log("Response dari server:", result);
+                    console.log("Reference:", result.reference);
 
-			    <div class="mb-4">
-				<label>Product Detail</label>
-				<input required id="productDetail" value="Sepatu Trendy" type"text" class="form-control" placeholder="Sepatu Trendy">                
-			    </div>
+                    if (!result.reference) {
+                         alert('Error: ' + (result.Message || 'Gagal membuat transaksi. Periksa console log.'));
+                         buttonPay.disabled = false;
+                         buttonPay.innerHTML = "Bayar Dengan Duitku";
+                         return;
+                    }
 
-			    <div class="mb-4">
-				<label>Email</label>
-				<input required id="email" value="customer@duitku.com" type"text" class="form-control" placeholder="customer@duitku.com">                
-			    </div>
-
-			    <div class="mb-4">
-				<label>Phone Number</label>
-				<input required id="phoneNumber" value="08123456789" type"number" class="form-control" placeholder="08123456789">                
-			    </div>
-
-			    <div class="mb-4">  
-				<label>Payment Interface</label>			
-				<select id="paymentUi" class="form-control">
-					<option value="1">PopUp UI </option>
-					<option value="2">Redirect UI</option>
-				</select>               
-			    </div>
-
-			    <button type="button" id="submit" class="btn btn-primary w-100 my-3 shadow" onClick="pay();">Pay With Duitku</button>
-
-			</form>
-			<!-- Form -->
-		    </div>
-		</div>
-		
-
-		<!-- Request to backend with ajax (example)  -->
-		<script type="text/javascript">
-
-		    function pay() {
-				var buttonPay = document.getElementById("submit")
-				buttonPay.disabled = true;
-				buttonPay.innerHTML = "loading";
-				var amount = document.getElementById("amount").value ;
-				var productDetail = document.getElementById("productDetail").value ;
-				var email = document.getElementById("email").value ;
-				var phoneNumber = document.getElementById("phoneNumber").value ;
-				var paymentUi = document.getElementById("paymentUi").value ;
-				$.ajax({
-				type: "POST",
-				data:{
-					  paymentAmount: amount, 
-					  productDetail: productDetail, 
-					  email: email, 
-					  phoneNumber: phoneNumber
-				},
-				url: 'https://baraya.topsetting.com/billing/duitku-checkout.php',
-				dataType: "json",
-				cache: false,
-				success: function (result) {                				
-							console.log(result.reference);
-							console.log(result);
-
-							if(paymentUi === "2"){ // user redirect payment interface
-								window.location = result.paymentUrl;
-							}
-
-							checkout.process(result.reference, {
-								successEvent: function(result){
-									// tambahkan fungsi sesuai kebutuhan anda
-									console.log('success');
-									console.log(result);
-									alert('Payment Success');
-									buttonPay.disabled = false;
-									buttonPay.innerHTML = "Pay With Duitku";
-								},
-								pendingEvent: function(result){
-									// tambahkan fungsi sesuai kebutuhan anda
-									console.log('pending');
-									console.log(result);
-									alert('Payment Pending');
-									buttonPay.disabled = false;
-									buttonPay.innerHTML = "Pay With Duitku";
-								},
-								errorEvent: function(result){
-									// tambahkan fungsi sesuai kebutuhan anda
-									console.log('error');
-									console.log(result);
-									alert('Payment Error');
-									buttonPay.disabled = false;
-									buttonPay.innerHTML = "Pay With Duitku";
-								},
-								closeEvent: function(result){
-									// tambahkan fungsi sesuai kebutuhan anda
-									console.log('customer closed the popup without finishing the payment');
-									console.log(result);
-									alert('customer closed the popup without finishing the payment');
-									buttonPay.disabled = false;
-									buttonPay.innerHTML = "Pay With Duitku";
-								}
-							});			
-
-			    },
-			});
-
-		    }
-		</script>
-		
-
-	</body>
+                    if (paymentUi === "2") { // Redirect UI
+                        window.location = result.paymentUrl;
+                    } else { // PopUp UI
+                        checkout.process(result.reference, {
+                            successEvent: function (result) {
+                                console.log('success');
+                                console.log(result);
+                                alert('Pembayaran Berhasil');
+                                buttonPay.disabled = false;
+                                buttonPay.innerHTML = "Bayar Dengan Duitku";
+                            },
+                            pendingEvent: function (result) {
+                                console.log('pending');
+                                console.log(result);
+                                alert('Pembayaran Tertunda');
+                                buttonPay.disabled = false;
+                                buttonPay.innerHTML = "Bayar Dengan Duitku";
+                            },
+                            errorEvent: function (result) {
+                                console.log('error');
+                                console.log(result);
+                                alert('Pembayaran Gagal');
+                                buttonPay.disabled = false;
+                                buttonPay.innerHTML = "Bayar Dengan Duitku";
+                            },
+                            closeEvent: function (result) {
+                                console.log('customer closed the popup without finishing the payment');
+                                console.log(result);
+                                buttonPay.disabled = false;
+                                buttonPay.innerHTML = "Bayar Dengan Duitku";
+                            }
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX Error:", xhr.responseText);
+                    alert("Terjadi kesalahan server. Silakan coba lagi.");
+                    buttonPay.disabled = false;
+                    buttonPay.innerHTML = "Bayar Dengan Duitku";
+                }
+            });
+        }
+    </script>
+</body>
 </html>
- 
-	
