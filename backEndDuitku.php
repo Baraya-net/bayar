@@ -1,6 +1,6 @@
 <?php
-    $merchantCode = 'YOUR_MERCHANT_CODE'; // from duitku
-    $merchantKey = 'YOUR_MERCHANT_KEY'; // from duitku
+    $merchantCode = 'DS25268E'; // from duitku
+    $merchantKey = '32d50d1ffd04213b5435877c65d6fd0e'; // from duitku
 
     $paymentAmount = isset($_POST['paymentAmount']) ? $_POST['paymentAmount'] : null; // Amount
     $email = isset($_POST['email']) ? $_POST['email'] : null; // your customer email
@@ -10,8 +10,8 @@
     $additionalParam = ''; // optional
     $merchantUserInfo = ''; // optional
     $customerVaName = 'John Doe'; // display name on bank confirmation display
-    $callbackUrl = 'http://YOUR_SERVER/callback'; // url for callback
-    $returnUrl = 'http://YOUR_SERVER/return'; // url for redirect
+    $callbackUrl = 'https://baraya.topsetting.com/billing/duitku-checkout.php'; // url for callback
+    $returnUrl = 'https://baraya.topsetting.com:973/rad-admin'; // url for redirect
     $expiryPeriod = 10; // set the expired time in minutes
 
     // Customer Detail
