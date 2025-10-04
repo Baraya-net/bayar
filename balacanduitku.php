@@ -6,11 +6,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Content-Type: application/json');
 
     // --- Ambil Kredensial & Konfigurasi ---
-    // Gunakan Kode Merchant dari info teks Anda
     $merchantCode = 'DS25287'; 
-    // Gunakan Merchant Key dari file yang Anda berikan
     $merchantKey = '32d50d1ffd04213b5435877c65d6fd0e'; 
-    // Arahkan ke Sandbox Duitku untuk testing
     $url = 'https://api-sandbox.duitku.com/api/merchant/createInvoice';
 
     // --- Ambil Data dari AJAX Request ---
@@ -23,9 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $merchantOrderId = time(); 
 
     // --- URL Callback & Return ---
-    // URL ini akan dipanggil oleh server Duitku setelah pembayaran selesai
     $callbackUrl = 'https://baraya.topsetting.com/billing/duitku-checkout.php';
-    // URL ini adalah halaman tujuan customer setelah menyelesaikan pembayaran
     $returnUrl = 'https://baraya.topsetting.com:973/rad-admin';
 
     // --- Detail Customer & Item ---
@@ -62,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // --- Kirim Request ke Duitku menggunakan cURL ---
     $timestamp = round(microtime(true) * 1000);
-    $signature = hash('sha256', $merchantCode . $timestamp . $merchantKey);
+    $signature = hash('sha26', $merchantCode . $timestamp . $merchantKey);
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -80,9 +75,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    
+    // PERBAIKAN: Menambahkan penanganan error yang lebih baik
+    if ($response === false) {
+        $error_msg = curl_error($ch);
+        curl_close($ch);
+        http_response_code(500); // Internal Server Error
+        echo json_encode(['Message' => 'Gagal menghubungi server Duitku: ' . $error_msg]);
+        exit;
+    }
+    
     curl_close($ch);
 
-    // --- Kirimkan response dari Duitku kembali ke JavaScript ---
+    if ($httpCode != 200) {
+        http_response_code($httpCode);
+        $error_response = json_decode($response, true);
+        $errorMessage = isset($error_response['Message']) ? $error_response['Message'] : 'Terjadi kesalahan dari Duitku.';
+        echo json_encode(['Message' => $errorMessage, 'duitkuResponse' => $response]);
+        exit;
+    }
+
+    // --- Kirimkan response sukses dari Duitku kembali ke JavaScript ---
     echo $response;
 
     // Hentikan eksekusi script agar tidak mengirimkan HTML di bawah
