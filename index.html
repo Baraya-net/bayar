@@ -5,6 +5,9 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- PERBAIKAN: Menambahkan Content Security Policy (CSP) via Meta Tag -->
+    <!-- Ini adalah upaya untuk melonggarkan kebijakan keamanan. Mungkin tidak berfungsi jika server menerapkan kebijakan yang lebih ketat. -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' https://app-sandbox.duitku.com https://cdnjs.cloudflare.com https://getbootstrap.com; connect-src 'self' https://app-sandbox.duitku.com;">
     <title>Pembayaran Duitku</title>
     <!-- Bootstrap CSS -->
     <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -65,8 +68,9 @@
 
             $.ajax({
                 type: "POST",
-                // PERBAIKAN: Kirim data ke file ini sendiri, bukan ke URL lain
-                url: '', 
+                // PERBAIKAN: Mengganti URL ke nama file eksplisit.
+                // Ganti 'pembayaran_duitku.php' jika nama file Anda berbeda.
+                url: 'pembayaran_duitku.php', 
                 data: {
                     paymentAmount: amount,
                     productDetail: productDetail,
@@ -77,7 +81,6 @@
                 cache: false,
                 success: function (result) {
                     console.log("Response dari server:", result);
-                    console.log("Reference:", result.reference);
 
                     if (!result.reference) {
                          alert('Error: ' + (result.Message || 'Gagal membuat transaksi. Periksa console log.'));
@@ -92,28 +95,24 @@
                         checkout.process(result.reference, {
                             successEvent: function (result) {
                                 console.log('success');
-                                console.log(result);
                                 alert('Pembayaran Berhasil');
                                 buttonPay.disabled = false;
                                 buttonPay.innerHTML = "Bayar Dengan Duitku";
                             },
                             pendingEvent: function (result) {
                                 console.log('pending');
-                                console.log(result);
                                 alert('Pembayaran Tertunda');
                                 buttonPay.disabled = false;
                                 buttonPay.innerHTML = "Bayar Dengan Duitku";
                             },
                             errorEvent: function (result) {
                                 console.log('error');
-                                console.log(result);
                                 alert('Pembayaran Gagal');
                                 buttonPay.disabled = false;
                                 buttonPay.innerHTML = "Bayar Dengan Duitku";
                             },
                             closeEvent: function (result) {
                                 console.log('customer closed the popup without finishing the payment');
-                                console.log(result);
                                 buttonPay.disabled = false;
                                 buttonPay.innerHTML = "Bayar Dengan Duitku";
                             }
@@ -122,7 +121,7 @@
                 },
                 error: function (xhr, status, error) {
                     console.error("AJAX Error:", xhr.responseText);
-                    alert("Terjadi kesalahan server. Silakan coba lagi.");
+                    alert("Terjadi kesalahan server: " + xhr.status + " " + xhr.statusText + ". Silakan coba lagi.");
                     buttonPay.disabled = false;
                     buttonPay.innerHTML = "Bayar Dengan Duitku";
                 }
@@ -131,3 +130,4 @@
     </script>
 </body>
 </html>
+
