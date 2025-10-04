@@ -1,66 +1,55 @@
 <?php
-    $merchantCode = 'DS25268E'; // from duitku
-    $merchantKey = '32d50d1ffd04213b5435877c65d6fd0e'; // from duitku
+// BAGIAN SERVER (BACKEND)
+// Kode ini hanya akan berjalan jika ada permintaan POST dari JavaScript di bawah
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Set header sebagai JSON karena AJAX mengharapkan response JSON
+    header('Content-Type: application/json');
 
-    $paymentAmount = isset($_POST['paymentAmount']) ? $_POST['paymentAmount'] : null; // Amount
-    $email = isset($_POST['email']) ? $_POST['email'] : null; // your customer email
-    $phoneNumber = isset($_POST['phoneNumber']) ? $_POST['phoneNumber'] : null;// your customer phone number (optional)
-    $productDetails = isset($_POST['productDetail']) ? $_POST['productDetail'] : null;
-    $merchantOrderId = time(); // from merchant, unique   
-    $additionalParam = ''; // optional
-    $merchantUserInfo = ''; // optional
-    $customerVaName = 'John Doe'; // display name on bank confirmation display
-    $callbackUrl = 'https://baraya.topsetting.com/billing/duitku-checkout.php'; // url for callback
-    $returnUrl = 'https://baraya.topsetting.com:973/rad-admin'; // url for redirect
-    $expiryPeriod = 10; // set the expired time in minutes
+    // --- Ambil Kredensial & Konfigurasi ---
+    // Gunakan Kode Merchant dari info teks Anda
+    $merchantCode = 'DS25287'; 
+    // Gunakan Merchant Key dari file yang Anda berikan
+    $merchantKey = '32d50d1ffd04213b5435877c65d6fd0e'; 
+    // Arahkan ke Sandbox Duitku untuk testing
+    $url = 'https://api-sandbox.duitku.com/api/merchant/createInvoice';
 
-    // Customer Detail
+    // --- Ambil Data dari AJAX Request ---
+    $paymentAmount = isset($_POST['paymentAmount']) ? (int)$_POST['paymentAmount'] : 0;
+    $email = isset($_POST['email']) ? $_POST['email'] : null;
+    $phoneNumber = isset($_POST['phoneNumber']) ? $_POST['phoneNumber'] : null;
+    $productDetails = isset($_POST['productDetail']) ? $_POST['productDetail'] : 'Test Product';
+    
+    // Buat ID Order yang unik
+    $merchantOrderId = time(); 
+
+    // --- URL Callback & Return ---
+    // URL ini akan dipanggil oleh server Duitku setelah pembayaran selesai
+    $callbackUrl = 'https://baraya.topsetting.com/billing/duitku-checkout.php';
+    // URL ini adalah halaman tujuan customer setelah menyelesaikan pembayaran
+    $returnUrl = 'https://baraya.topsetting.com:973/rad-admin';
+
+    // --- Detail Customer & Item ---
+    $customerVaName = 'John Doe';
     $firstName = "John";
     $lastName = "Doe";
-
-    // Address
-    $alamat = "Jl. Kembangan Raya";
-    $city = "Jakarta";
-    $postalCode = "11530";
-    $countryCode = "ID";
-
     $address = array(
-        'firstName' => $firstName,
-        'lastName' => $lastName,
-        'address' => $alamat,
-        'city' => $city,
-        'postalCode' => $postalCode,
-        'phone' => $phoneNumber,
-        'countryCode' => $countryCode
+        'firstName' => $firstName, 'lastName' => $lastName, 'address' => 'Jl. Kembangan Raya',
+        'city' => 'Jakarta', 'postalCode' => '11530', 'phone' => $phoneNumber, 'countryCode' => 'ID'
     );
-
     $customerDetail = array(
-        'firstName' => $firstName,
-        'lastName' => $lastName,
-        'email' => $email,
-        'phoneNumber' => $phoneNumber,
-        'billingAddress' => $address,
-        'shippingAddress' => $address
+        'firstName' => $firstName, 'lastName' => $lastName, 'email' => $email, 'phoneNumber' => $phoneNumber,
+        'billingAddress' => $address, 'shippingAddress' => $address
     );
-
-
-    $item1 = array(
-        'name' => $productDetails,
-        'price' => (int)$paymentAmount,
-        'quantity' => 1);
-
-
     $itemDetails = array(
-        $item1
+        array('name' => $productDetails, 'price' => $paymentAmount, 'quantity' => 1)
     );
 
+    // --- Buat Payload untuk API Duitku ---
     $params = array(
         'merchantCode' => $merchantCode,
-        'paymentAmount' => (int)$paymentAmount,
+        'paymentAmount' => $paymentAmount,
         'merchantOrderId' => (string)$merchantOrderId,
         'productDetails' => $productDetails,
-        'additionalParam' => $additionalParam,
-        'merchantUserInfo' => $merchantUserInfo,
         'customerVaName' => $customerVaName,
         'email' => $email,
         'phoneNumber' => $phoneNumber,
@@ -68,42 +57,35 @@
         'customerDetail' => $customerDetail,
         'callbackUrl' => $callbackUrl,
         'returnUrl' => $returnUrl,
-        'expiryPeriod' => $expiryPeriod
+        'expiryPeriod' => 10 // dalam menit
     );
 
-    $params_string = json_encode($params);
-    $url = 'https://api-sandbox.duitku.com/api/merchant/createInvoice';
-	
-    $ch = curl_init();
+    // --- Kirim Request ke Duitku menggunakan cURL ---
     $timestamp = round(microtime(true) * 1000);
-    curl_setopt($ch, CURLOPT_URL, $url); 
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $params_string);                                                                  
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
-				'Content-Type: application/json',                                                                                
-				'Content-Length: ' . strlen($params_string),
-				'x-duitku-signature:' . hash('sha256', $merchantCode.$timestamp.$merchantKey) ,
-				'x-duitku-timestamp:' . $timestamp ,
-				'x-duitku-merchantcode:' . $merchantCode	
-			)                                                                       
-    );   
-	
-	
+    $signature = hash('sha256', $merchantCode . $timestamp . $merchantKey);
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        'Content-Type: application/json',
+        'Content-Length: ' . strlen(json_encode($params)),
+        'x-duitku-signature:' . $signature,
+        'x-duitku-timestamp:' . $timestamp,
+        'x-duitku-merchantcode:' . $merchantCode
+    ));
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 
-    //execute post
-    $request = curl_exec($ch);
+    $response = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
 
-    if($httpCode == 200)
-    {
-        $result = json_decode($request, true);
-        echo $request;
-    }
-    else
-    {
-        echo $request;
-    }
+    // --- Kirimkan response dari Duitku kembali ke JavaScript ---
+    echo $response;
 
+    // Hentikan eksekusi script agar tidak mengirimkan HTML di bawah
+    exit;
+}
 ?>
